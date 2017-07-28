@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BuildVis Tool</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!--    <script>
+        $('#collapseCategory').on('show.bs.collapse', function(){
+            $('a.accordion-toggle > i').removeClass('glyphicon-collapse-up').addClass('glyphicon-collapse-down');
+        });
+        $('#collapseCategory').on('hide.bs.collapse', function(){
+            $('a.accordion-toggle > i').removeClass('glyphicon-collapse-down').addClass('glyphicon-collapse-up');
+        });
+    </script>-->
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    
+    <!--  START OF APP SPECIFIC CODE -->
+    
+    <!-- currently required for page display -->
+    <script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.8.21.custom.min.js"></script>
+<!--    <link rel="stylesheet" type="text/css" href="css/datepicker.css"> 
+    <link rel="stylesheet" type="text/css" href="css/normalize.css"> -->
+    <script type="text/javascript" src="js/jquery/jquery.datepick.js"></script>
+    <script src="js/jquery/jquery.js"></script>
+    <script src="js/jquery/jquery.form.js"></script>
+    
+    <script> var current_building = 7; //Determines which building will be loaded (temporary) </script>
+    
+    <!-- check operating system  -->
+    <script src="js/webgl/return_operating_system.js"></script>
+    
+    <!--  GOOGLE CALENDAR SCRIPT -->
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <script src="js/google_calendar/query_calendar.js"></script>
+    
+    <!-- initialise and set global variables -->
+    <script src="js/variables/init_global_variables.js"></script>
+    <script src="js/variables/set_global_variables.js"></script>
+    <script src="js/variables/zone_variables.js"></script>
+    <script src="js/variables/init_menus.js"></script>
+        
+    <!-- Language Variables: 
+    This file updates elements in the HTML page 
+    according to the language setting (e.g. dutch, spanish or english). -->
+    <script src="js/variables/languages/set_language.js"></script>
+
+    <!-- occupancy matrix model 
+    (only used for displaying which zones are occupied)  -->
+    <script src="js/occupancy_model/occupancy_matrix.js"></script>
+
+    <!-- load data objects (for storing zones, paths, etc.)-->
+    <script src="js/objects/zone.js"></script>
+    <script src="js/objects/path.js"></script>
+    <script src="js/objects/polygon.js"></script>
+
+    <!-- draws different objects (currently I use this for drawing the zones,
+    which I needed to add to Antons webgl stuff. 
+    I needed to put here, as the next functions 
+    will populate the zones with values.-->
+    <script src="js/webgl/draw/drawZones.js"></script>
+    
+    
+    <!-- for querying the ontology -->
+    <script src="js/sparql/query.js"></script>
+    <script src="js/sparql/zone_query.js"></script>
+    <script src="js/sparql/path_query.js"></script>
+    <script src="js/sparql/sensor_query.js"></script>
+    <script src="js/sparql/occupancy_query.js"></script>
+    <script src="js/sparql/office_user_activities_sparql.js"></script>
+    <script src="js/sparql/populate_sql_database.js"></script>
+
+    <!-- for querying the sql database -->
+    <script src="js/my_sql_ajax/query_building_database.js"></script>
+    
+    
+    <script src="js/page-ui/html-controls.js"></script>
+    <script src="js/page-ui/sql_chart.js"></script>
+    <script src="js/page-ui/building_control_html_controls.js" type="text/javascript"></script>
+
+    <!-- Widgets -->
+    <script src="js/widgets/traffic_light.js"></script>
+    <script src="js/widgets/highcharts.js"></script>
+    <script src="js/widgets/ajax_create_highchart.js"></script>
+    <script src="js/widgets/chart_1.js"></script>
+    <script src="js/widgets/sliders.js"></script>
+    <script src="js/widgets/date_time_pickers.js"></script>
+
+
+    <!--Some simple maths functions -->
+    <script src="js/webgl/simple-math.js"></script>
+
+
+    <!--For creating and populating the tables-->
+    <script src="js/handsontables/activity-tables.js"></script>  
+    <script src="js/handsontables/checkPaths.js"></script>  
+    <script src="js/handsontables/updatePaths.js"></script> 
+
+
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/handsontables/jquery.handsontable.full.js"></script>
+    <script src="js/jquery/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="js/jquery/jquery.timepicker.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css" /> 
+
+    <link rel="stylesheet" media="screen" href="css/jquery.handsontable.full.css">
+
+    <link rel="stylesheet" type="text/css" href="css/kris-css.css">
+    <link rel="stylesheet" href="css/jquery/jquery-ui-kris.css" />
+
+
+</head>
+<body>
+    <div class="container">
+
+        <!-- Static navbar -->
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">BuildVis</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Commented out extra links from the navbar -->
+                        <!--<li class="active"><a href="#">Link</a></li>-->
+                        <!--<li><a href="#">Link</a></li>-->
+                        <!--<li><a href="#">Link</a></li>-->
+<!--                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Choose Building<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./forum.html">Forum</a></li>
+                                <li><a href="./media-tic.html">Media-TIC</a></li>
+                                <li><a href="./blunet.html">BluNet</a></li>
+                                <li><a href="./pica.html">PICA</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Under Construction</a></li>
+                                <li><a href="#">Under Construction</a></li>
+                            </ul>
+                        </li>-->
+                    </ul>
+                    <!-- Commented out the the navbar options examples... these may be useful -->
+                    <!--<ul class="nav navbar-nav navbar-right">-->
+                        <!--<li class="active"><a href="./">Default</a></li>-->
+                        <!--<li><a href="../navbar-static-top/">Static top</a></li>-->
+                        <!--<li><a href="../navbar-fixed-top/">Fixed top</a></li>-->
+                    <!--</ul>-->
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </div>
+
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>BuildVis Tool Prototype</h1>
+<!--            <p>This is a prototype of a new application designed to help you understand your activities and movements in the office over a specific month.</p>-->
+<p>Find where people are sitting in KDEG!</p>
+<p>Hold 'x' and click on zone to select. Hold 'z' and drag to create a new zone.</p>
+
+        </div>
+
+
+<!--            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Sensor Monitoring Interface
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div id="building_energy_consumption_viewer_div">         
+                            <div id="bcs-bottom-row-left">
+                                <h3>Building Performance</h3>
+                                <div id="traffic_light_container">
+                                    <div class="ampel">
+                                            <span id="red" class="light">&nbsp;</span>
+                                            <span id="yellow" class="light">&nbsp;</span>
+                                            <span id="green" class="light">&nbsp;</span>
+                                    </div>
+                                    <span id="mode"></span>
+                                    <div><label for="energy_consumption_display_div_id">Zone ID:</label><input type="text" id="energy_consumption_display_div_id" value='Click on Zone' /></div>
+                                    <div><label for="energy_consumption_display_div">Current Energy Consumption:</label><input type="text" id="energy_consumption_display_div" value="kWh" /></div>
+                                </div>
+                            </div> 
+
+                            <div id="bcs-bottom-row-middle">
+                                <div id="tabs_energy_monitoring">
+
+                                    <div id="historical_monitoring" class="section"> 
+                                        <script>
+        //                                    get_details(1, 2, 3, 4);
+                                        </script>
+                                    <div id="chartViz2">Select Zone and Query for Sensor Data to Display Chart</div>
+                                    </div>
+
+                                </div>  
+                            </div>
+                            
+                            <div id="bcs-bottom-row-right">
+
+                                <div id="monitoring_time_select">
+                                    <div><label for="monitoring_zone_id_div">Zone_ID:</label><input type="text" id="monitoring_zone_id_div" value="R02" /></div>
+                                    <div><label for="monitoring_user_id">User ID:</label><input type="text" id="monitoring_user_id_div" value='054' /></div>
+                                    <div><label for="monitoring_date_picker">Date:</label><input type="text" value='01/30/2013' id="monitoring_date_picker" /></div>
+                                    <div><label for="monitoring_time_picker_start">Start Time:</label><input id="monitoring_time_picker_start" value='12:00' type="text" class="time" /></div>
+                                    <div><label for="monitoring_time_picker_end">End Time:</label><input id="monitoring_time_picker_end" value='15:00' type="text" class="time" /></div>
+                                </div>
+                document.getElementById('monitoring_date_picker').value
+                                <button onclick="query_all_values();return false;">Query Values</button>
+
+
+                                <div id="monitoring_checklist_div">
+                                    <input id = "m_c_1" type="checkbox" class="m_c_style" value="occupancy" onclick=""><label for="m_c_1">Occupancy</label><br />
+                                </div>
+                                <script type="text/javascript"> 
+                                    init_sensors();
+                                </script>
+                                
+                            </div> 
+                        </div>
+                    </div>
+                </div>  
+                end collapse one
+            </div>  -->
+            <!--/end div class panel default--> 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        3D Map View (Hold the 'x' key and mouse click on a zone to select).
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <canvas id="canvas_id" width=1024 height=768 style="font-family:monospace; background-color: #a9a9a9">
+                        your browser does not support HTML5
+                    </canvas>
+                </div>
+            </div>
+        </div>
+            
+            
+            
+            
+            
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                        Activity Modeller
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse in">
+                <div class="panel-body">
+
+
+                    <div id="bottom-row" class="config-window">
+                        <div id="bottom-row-left">
+
+                            <div id="user-info">
+                                <h3 id="user_info_header_id">Gebruikers Identificatie</h3>
+                                <div id="id_roomNo" class="dataTable"></div>                      
+                                <!--<button onclick="update_zone_id_handsontables()" name="update_activity_zone_id">Update Activity Zone</button>-->
+                            </div>
+                            <div id="dropdown-date">
+
+                                <h3 id="date_select_header_id">Selecteer een Datum</h3>
+                                <input type="text" id="datepicker" />
+                                <script type="text/javascript">
+            //                            drop_down_dates();
+                                    $(function() {
+            //                              $( "#datepicker" ).datepicker();
+                                      var myDate = new Date();  
+                                      var d1 = myDate.getMonth()+1;
+                                      if(d1<10)
+                                      {
+                                          d1 = "0" + d1;
+                                      }
+                                      var day = myDate.getDay();
+                                      var d2 = myDate.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+                                      if(d2<10)
+                                      {
+                                          d2 = "0" + d2;
+                                      }
+                                      var todays_date = (d1 + '/' + d2 + '/' + myDate.getFullYear());
+                                        $("#datepicker").datepicker();
+                                        $("#datepicker").val(todays_date);
+                                    });
+                                </script>
+
+                            </div>
+                        </div>        
+
+                    <div id="bottom-row-middle">
+                        <div id="activity_tabs">
+                            <div id="tabs_text_id">Uw Wekelijkse Activiteiten</div>
+                            <ul>
+                              <li><a href="#activity_tabs-1" onclick="toggleVisibility('activity-day-start-end-table');" id="activity-day-start-end-table-h">Dag begin- en eindtijden</a></li>
+                              <li><a href="#activity_tabs-2" onclick="toggleVisibility('activity-lunch-table');" id="activity-lunch-table-h">Lunch</a></li>
+                              <li><a href="#activity_tabs-4" onclick="toggleVisibility('activity-meetings-table'); queryGoogleCalendar();" id="activity-meetings-table-h">Vergaderingen</a></li>
+                              <!--<li><a href="#tabs-3" onclick="toggleVisibility('activity-breaks-table');" id="activity-breaks-table-h">Andere activiteiten</a></li>-->
+                            </ul>
+                            <div id="tables">
+                                <div id="activity_tabs-1">
+                                    <div id="activity-day-start-end-table" class="section"> 
+                                        <div id="tabs_1_text_id">Dag begin- en eindtijden, route naar en van uw werkplek.</div>
+                                        <div id="dayStart_dayEnd" class="dataTable"></div>
+                                    </div>                    
+                                </div>  
+                                <!--End tabs-1--> 
+                                <div id="activity_tabs-2">
+                                    <div id="activity-lunch-table" class="section"> 
+                                        <div id="tabs_2_text_id">Lunch begin- en eindtijden, genomen route tussen werkplek en locatie van uw lunch.</div>
+                                        <div id="lunchBreak" class="dataTable"></div>
+                                    </div>
+                                </div>  
+                                <!--End tabs-2--> 
+                                <div id="activity_tabs-4">
+                                    <div id="activity-meetings-table" class="section"> 
+                                    <div id="tabs_4_text_id">Vergaderingen</br></div>
+                                    <script type="text/javascript">
+                                        drop_down_meetings_table();
+                                    </script>
+                                    <div id="dailyMeetingsMon" class="dataTable"></div>
+                                    <!--<b>Tuesday</b>-->
+                                    <div id="dailyMeetingsTue" class="dataTable"></div>
+                                    <!--<b>Wednesday</b>-->
+                                    <div id="dailyMeetingsWed" class="dataTable"></div>
+                                    <!--<b>Thursday</b>-->
+                                    <div id="dailyMeetingsThur" class="dataTable"></div>
+                                    <!--<b>Friday</b>-->
+                                    <div id="dailyMeetingsFri" class="dataTable"></div>
+                                    <!--<b>Saturday</b>-->
+                                    <div id="dailyMeetingsSat" class="dataTable"></div>
+                                    <!--<b>Sunday</b>-->
+                                    <div id="dailyMeetingsSun" class="dataTable"></div>
+                                    </div>
+                                </div> 
+                                <!-- End tabs-4 -->
+                            </div> <!-- End Tables -->
+                        </div> <!-- End Tabs -->
+                    </div> <!-- End bottom row middle -->
+                    <div id="bottom-row-right">
+                        <div id="buttons">
+                            <div id="activity_button_load">
+                                <button onclick="" name="load" id="load_button_text_id">Laden Activiteiten</button>
+                            </div>
+                            <div id="activity_button_save">
+                                <button onclick="" name="save" id="save_button_text_id">Opslaan Activiteiten</button>
+                            </div>
+                            <div id="activity_button_load_gCal">
+                                <button onclick="" name="load_gCal" id="load_gCal_button_text_id">Laden Google Events</button>
+                            </div>
+            <!--                <div id="button_log_data">
+                                <button onclick="" name="log_data">Log Data</button>
+                            </div>-->
+                        </div>
+                        </div>
+                    </div>              
+                </div> <!-- /end div class panel body -->
+            </div> <!-- /end div collapse 3 -->
+        </div><!-- /end div class panel default -->
+            
+            
+        <div class="panel-group" id="accordion" >
+       
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            Zone Info.
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+            <div id="mid-row-right">
+               
+            <div id="zone_viewer_div">  
+                <h3 id="zone_modeller_heading">Zone Info.</h3>
+                <form name="zone_form">
+                    <div id="zone_id_div">
+                        <div id="zone_div_1">
+                            <div id="zone_id_text_div">Zone I.D.:</div>
+                            <input type="text" name="zone_id_name" id="zone_id_form"></div>
+<!--                        <div id="zone_div_2">
+                            <div id="zone_type_text_div">Zone Type:</div>
+                            <select id="zone_type_dropdown_id" class="OptionsStyle" onchange="choose_activity_dropdown()">
+                                <option value="1" id="activity_type_radio_1">Activity</option>
+                                <option value="2" id="activity_type_radio_2">Path</option>
+                            </select>
+                        </div>-->
+                        <div id="zone_div_3">
+                            <div id="zone_symbolic_value_text_div">Symbolic Name:</div>
+                            <div id="symbolic_id_form_div"><input type="text" name="symbolic_name" id="symbolic_id_form"></div>
+                        </div>
+                        <div id="zone_buttons_id">
+                            <button onclick="delete_zone(); return false;" id="delete_activity_id" name="delete_activity">Delete Zone</button>
+                            <button onclick="sparql_load_zones(true); sparql_load_zones_new(true); create_zone_path_for_table(); return false;" id="load_activity_id" name="load_activity">Load all Zones </button>
+                        </div>
+                    </div>                       
+                    <div id="zone_x1_y1_z1">
+                        Zone Point A: </br>
+                        X- <input type="text" name="zone_x1" class="coord">
+                        Y- <input type="text" name="zone_y1" class="coord">
+                        Z- <input type="text" name="zone_z1" class="coord">
+                    </div>
+
+                    <div id="zone_x2_y2_z2">
+                        Zone Point B: </br>
+                        X- <input type="text" name="zone_x2" class="coord">
+                        Y- <input type="text" name="zone_y2" class="coord">
+                        Z- <input type="text" name="zone_z2" class="coord">
+                    </div>
+                </form>
+
+            </div>
+
+            <div id="path_viewer_div">  
+                <h3 id="path_modeller_id">Path Modeller</h3>
+                <form name="path_form">
+
+                    <div id="path_id_div">
+                        <div id="path_id_text_div">Path I.D.:</div><input type="text" name="path_id_name" id="path_id_form">
+                        <div id="path_buttons_id">
+                            <button onclick="sparql_delete_path(); return false;"  id="delete_path_id" name="path_activity_delete_button_div">Delete Path</button>         
+                            <button onclick="sparql_load_path(true); sparql_load_zones(false); sparql_load_path(false); return false;"  id="load_path_id" name="path_activity_save_button_div">Load all Paths</button>
+                        </div>
+                    </div>
+                    <div id="path_table_div">
+                        <div id="path_activity_type_div">
+                            Activity Type:  
+                            <script type="text/javascript">
+                                drop_down_activities();
+                            </script>
+                        </div>
+                        <div id="path_activity_e_a_div">
+                            <script type="text/javascript">
+                                check_activity_path_entrance_exit();
+                            </script>
+                        </div>
+                        <div id="path_activity_day_div">
+                            <script type="text/javascript">
+                                radio_activity_day();
+                            </script>
+                        </div>
+                        <div id="path_activity_button_div">                          
+                            <button onclick="" name="path_activity_add_button_div">Add Path to Activity Table</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            
+                    </div> <!-- /end div class panel body -->
+                </div> <!-- /end div collapse 3 -->
+            </div><!-- /end div class panel default -->
+            
+           
+        </div> 
+        <!-- /end div class panel default -->
+    </div> 
+    <!-- /end panel group container -->
+    
+</div> <!-- /container -->
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ************************* END ***************************** -->
+
+
+    <script src="js/webgl/draw/drawZones.js"></script>
+    <script src="js/webgl/display_room_tags.js"></script>
+    <script src="js/webgl/blinds.js"></script>
+    <script src="js/webgl/input_handler.js"></script>
+    <script src="js/webgl/ray-plane-pick.js"></script>
+    <script src="js/webgl/ground_plane.js"></script>
+    <script src="js/webgl/cam_gui.js"></script>
+    <script src="js/webgl/gl_utils.js"></script>
+    <script src="js/webgl/camera.js"></script>
+    <script src="js/webgl/load_xml_building.js"></script>
+    <script src="js/webgl/antons_maths.js"></script>
+    <script src="js/webgl/webgl-debug.js"></script>
+    <script src="js/webgl/webgl-utils.js"></script>
+    <script src="js/webgl/real_data.js"></script>
+    <script src="js/webgl/model_data.js"></script>
+    <script src="js/webgl/font.js"></script>
+    <script src="js/webgl/utils.js"></script>
+    <script src="js/webgl/chart.js"></script>
+    <script src="js/webgl/main.js"></script>
+    <script src="js/webgl/init.js"></script>
+
+    <script>
+
+        //    populate_sql_database_activities_from_ontology();
+        sparql_load_zones(false);
+        if(current_building!==2){
+            sparql_load_zones_new(false);
+        }
+
+    </script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

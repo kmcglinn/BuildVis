@@ -1,0 +1,1180 @@
+/* 
+    Document   : kris-css
+    Created on : 19-Apr-2013, 10:31:06
+    Author     : KnoHolEM
+    Description:
+        Purpose of the stylesheet follows.
+*/
+/*
+(for highcharts)*/
+credits{
+      enabled: false
+  }
+body{
+	background-color:#102F5B;
+	border-style: solid;
+	border-width: 0px;
+	/*align: center;*/
+	padding: 0px 0px 0px 0px
+}
+
+#container{
+	width: 1600px;
+	height: 100%;
+	margin: 0px auto;
+	padding: 0px 10px 0px 10px;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #0000FF;
+	background-color:white;
+	float: left;
+}
+
+#title{
+	width: 1500px;
+	height: 80px;
+	border-style: solid;
+	border-width: 0px;
+	background-color: white
+}
+
+#top-row{
+        width: 100%;
+	height: 100%;
+        float: left;
+        clear: both
+}
+
+
+/*Middle Row 
+Contains: Left - WebGL/Image || Right - information display*/
+
+#mid-row{
+        width: 100%;
+	height: 100%;
+        float: left;
+        border-style:solid;
+        border-right:thick #ff0000;
+        border-left:thick #ff0000;
+        border-top:thick #ff0000;
+        clear: both;
+}
+
+#image{
+
+	width: 100%;
+	height: 100%;
+	float: left;
+	padding-left: 0px;
+	border-width: 0px
+	
+}
+
+#mid-row-left{
+
+	
+	height: 100%;
+	float: left;
+	padding-left: 0px;
+        padding-top: 0px;
+	border-width: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+        clear: both
+	
+}
+#gl_canvas_div{
+	width: 100%;
+	height: 100%;	
+}
+#webgl-div-info{
+    
+	width: 200px;
+	height: 100%;
+	float: left;
+	padding-left: 10px
+	
+}
+
+#mid-row-right{
+    
+    /*padding-left:90px;*/
+    width: 450px;
+    height: 100%;      
+    float: left;
+    border: 1px solid;  
+}
+
+
+#zone_viewer_div{
+    /*position:absolute;*/
+    width: 450px;
+    height: 200px;      
+    float: left;
+    padding-left:20px;
+    /*display:none;*/
+    /*border: 1px solid;*/  
+}
+
+#zone_id_div{  
+    width: 400px;
+    float: left;
+    padding-left:10px;
+    float:left;
+    /*border: 1px solid;*/
+}
+
+/*First Div Contains Zone ID and Text*/
+#zone_div_1{  
+    width: 400px;
+    height: 30px;
+    float: left;
+    /*border: 1px solid;*/
+}
+
+#zone_id_text_div{
+    width: 120px;
+    /*border: 1px solid;*/
+    float: left;
+}
+#zone_id_form{
+    /*border: 1px solid;*/
+    float: right;
+    width: 200px;
+}
+
+
+#zone_div_2{  
+    width: 400px;
+    height: 30px;
+    float: left;
+    /*border: 1px solid;*/
+}
+
+#zone_type_text_div{
+    width: 80px;
+    /*border: 1px solid;*/
+    float: left;
+}
+#zone_type_dropdown_id{
+    float: right;
+}
+
+#zone_div_3{  
+    width: 400px;
+    height: 30px;
+    float: left;
+    /*border: 1px solid;*/
+}
+
+#zone_symbolic_value_text_div{
+    /*padding-left: 10px;*/
+    width: 120px;
+    /*border: 1px solid;*/
+    float: left;
+}
+#symbolic_id_form{
+    /*border: 1px solid;*/
+    float: right;
+    width: 250px;
+}
+
+
+#zone_buttons_id{
+    /*padding-left:120px;*/
+    width: 350px;
+    float: right;
+    /*border: 1px solid;*/
+}
+#load_activity_id{  
+    padding-left:10px;
+    padding-right:10px;
+    margin-left:10px;
+    margin-right:10px;
+    float: right;
+    /*border: 1px solid;*/
+}
+#delete_activity_id{
+    padding-left:10px;
+    padding-right:10px;
+    
+    float: right;
+    /*border: 1px solid;*/
+}
+/*Zone Points*/
+#zone_x1_y1_z1{  
+    float: left;
+    padding-left:20px;
+    display:none;
+}
+#zone_x2_y2_z2{  
+    float: left;
+    padding-left:20px;
+    display:none;
+}
+/*Path Viewer*/
+#path_viewer_div{
+    width: 300px;
+    height: 100%;      
+    float: left;
+    padding-left:20px;
+    
+    display:none;
+    /*border: 1px solid;*/  
+}
+#path_id_div{     
+    float: left;
+    padding-left:10px;
+    padding-top:10px;
+    /*border: 1px solid;*/
+}
+#path_id_text_div{ 
+    float:left;
+    width: 80px;
+    /*border: 1px solid;*/
+}
+#path_buttons_id{
+    padding-left:120px;
+    width: 350px;
+    float: left;
+    /*border: 1px solid;*/
+}
+#load_path_id{  
+    padding-left:20px;
+    float: right;
+    /*border: 1px solid;*/
+}
+#delete_path_id{
+    padding-left:20px;
+    float: right;
+    /*border: 1px solid;*/
+}
+#path_activity_delete_button_div{
+    float: right;
+}
+#path_table_div{
+    margin-top: 70px;
+    height: 230px;
+    /*border: 3px solid;*/
+}
+#path_activity_type_div{  
+    padding-top: 10px;
+    width: 280px;
+    float: left;
+    padding-left:10px;
+}
+#activity_type_dropdown_id{
+    float: right;
+}
+#path_activity_day_div{     
+    float: left;
+    padding-left:10px;
+    border-style:solid;
+}
+#radio_activity_day_left{     
+    float: left;
+    height: 200px;
+    /*border: 1px solid;*/
+}
+#radio_activity_day_right{     
+    float: left;
+    height: 200px;
+    /*border: 1px solid;*/
+}
+#path_activity_button{     
+    float: left;
+    padding-left:10px;
+    padding-top:10px;
+    /*border: 1px solid;*/
+}
+#path_activity_e_a_div{
+
+    width:300px;
+    float:left;
+}
+#e_a_text_div{
+    padding: 10px;
+    width:120px;
+    float:left;
+    /*border: 1px solid;*/  
+}
+#entrance_path_zone_id{
+    width:120px;
+    float:left;
+    /*border: 1px solid;*/
+}
+#exit_path_zone_id{
+    padding-top:7px;
+    width:120px;
+    /*border: 1px solid;*/
+    float:left;
+}
+#e_a_form_checks_div{
+    padding-top: 10px;
+    width:150px;
+    float:right;
+    /*border: 1px solid;*/   
+}
+#path_entrance_id_form{
+    width:120px;
+    float: right;
+    /*border: 1px solid;*/
+}
+#activity_ea_checkbox_id_1{
+    float: right;
+    /*border: 1px solid;*/
+}
+
+#path_exit_id_form{
+    width:120px;
+    float: right;
+    /*border: 1px solid;*/
+}
+#activity_ea_checkbox_id_2{
+    float: right;
+    /*border: 1px solid;*/
+}
+#path_activity_button_div{
+    width: 350px;
+    float: left;
+    padding-left: 160px;
+    padding-top: 10px;
+    /*border: 1px solid;*/
+}
+#webg-img-radio{
+    float: left;
+    padding-left:20px
+}
+#webg-size-radio{
+    float: right;
+    padding-left:20px;
+    display:none
+}
+
+
+
+/*Bottom Row*/ 
+
+#bottom-row{
+        width: 100%;
+	height: 100%;
+        float: left;
+        border-top: 3px solid;
+        clear: both
+}
+#bottom-row-left{
+        width: 250px;
+	height: 100%;
+        float: left;
+        /*border: 1px solid*/
+}
+#user-info{
+
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-style:solid;
+    border-right: #ff0000;
+    border-left: #ff0000;
+    border-top: #ff0000;
+    border-width:1px
+    
+}
+#dropdown-date{
+
+    padding-left: 10px;
+    
+}
+
+#bottom-row-middle{
+        width: 500px;
+	height: 100%;
+        float: left;
+        /*border: 1px solid*/
+}
+#rule_tabs{
+
+	float: left;
+        width: 750px;
+	padding-left: 0px;
+        padding-bottom: 0px;
+	border-width: 0px;
+        padding-top: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+	background-color:white
+}
+#activity_tabs{
+
+	float: left;
+        width: 450px;
+	padding-left: 0px;
+        padding-bottom: 0px;
+	border-width: 0px;
+        padding-top: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+	background-color:white
+}
+#tabs_energy_monitoring{
+
+	float: left;
+        width: 500px;
+	padding-left: 0px;
+        padding-bottom: 0px;
+	border-width: 0px;
+        padding-top: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+	background-color:white
+}
+
+#tables{
+    	width: 520px;
+	height: 100%;
+	float: left;
+	padding-left: 0px;
+	border-width: 0px;
+        padding-top: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+	background-color:white
+    
+}
+
+#buttons{
+    height: 100%;
+    width: 140px;
+    padding-top: 250px;
+    float:right;
+    /*border-style: solid;*/
+    /*border: 1px solid;*/
+    background-color:white
+    
+}
+#activity_button_load{
+    clear: both
+}
+#activity_button_save{
+    clear: both
+}
+#activity_button_load{
+    float: left
+}
+#activity_button_save{
+    float:left;
+    padding-left: 0px; 
+}
+#activity_button_load_gCal
+{ 
+    visibility:hidden;
+}
+#config-tags{
+    width: 400px;
+    float: left;
+}
+#config-content{
+    padding-top: 30px;
+    width: 300px;
+    float: left;
+}
+
+#activity-console{
+    visibility:hidden;
+}
+#gl_canvas{
+    display:none
+}
+#canvas_overlay{
+    /*display:none*/ 
+}
+#canvas_id{
+    /*display:none*/
+}
+/*#activity-day-start-end-table{
+    visibility:hidden;
+    display:inline;
+}
+
+#activity-lunch-table{
+    visibility:hidden;
+    display:none;
+}
+
+#activity-breaks-table{
+    visibility:hidden;
+    display:none;
+}*/
+.section {
+    font-size: 60%;
+}
+
+
+
+#selected_zone_info_div_id
+{
+    float:left;
+    width:100%;
+    /*border: 1px solid;*/
+}
+#zone_id_div_id
+{
+    
+    float:right;
+    margin-right:20px;
+}
+
+#zone_selected_div_id
+{
+    font-size:20px;
+    float:left;
+    padding-left:10px;
+    
+}
+
+#zone_id_form_2
+{
+    padding-left:10px;
+}
+
+#highchart_div_id
+{
+    /*height:500px;*/
+    /*border: 1px solid;*/
+}
+
+
+#bcs-bottom-row-left{
+        width: 150px;
+	height: 100%;
+        float: left;
+/*        border: 1px solid*/
+}
+#bcs-bottom-row-middle
+{
+    width: 750px;
+    height: 100%;
+    float: left;
+    /*border: 1px solid;*/
+}
+#bcs-bottom-row-right
+{
+    width: 180px;
+    height: 100%;
+    float: left;
+    /*border: 1px solid*/
+}
+
+#monitoring_list_div{
+    
+    padding: 0;
+    margin: 0; 
+    
+}
+
+.light { 
+    display: block; 
+    width: 50px; 
+    height: 50px; 
+    background-color: grey; 
+    border: 1px solid black; 
+    -moz-border-radius: 20px; 
+    -webkit-border-radius: 20px; 
+    -o-border-radius: 20px; 
+}
+.ampel { 
+    background-color: black; 
+    padding: 10px; 
+    width: 50px; 
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
+    -o-border-radius: 5px; 
+    margin: auto; 
+}
+#content { 
+    margin: auto; 
+    width: 250px; 
+    text-align: center; 
+}
+#building_control_viewer_div
+{
+    
+    width: 100%;
+    height: 100%;      
+    float: left;
+    padding-left:20px;
+    /*display:none;*/
+    /*border: 1px solid;*/  
+}
+#control_tabs_div{
+
+    float: left;
+    /*width: 200px;*/
+    padding-left: 20px;
+    padding-bottom: 0px;
+    border-width: 0px;
+    padding-top: 0px;
+    /*border-style: solid;*/
+    /*border: 1px solid;*/
+    background-color:white
+}
+#monitoring_tabs_div{
+
+    float: left;
+    width: 500px;
+    padding-left: 20px;
+    padding-bottom: 0px;
+    border-width: 0px;
+    padding-top: 0px;
+    /*border-style: solid;*/
+    /*border: 1px solid;*/
+    background-color:white
+}
+#l_c_s_slider span {
+  height:120px; float:left; margin:15px
+}
+
+#b_c_s_slider span {
+  height:120px; float:left; margin:15px
+}
+
+
+
+.m_c_style{
+    
+    float: left;
+    
+}
+
+#monitoring_radio_time_div{
+    
+    padding-left: 100px;
+    
+}
+
+
+
+
+#date_and_time{
+    float:right;
+    position:absolute;
+    top:70px;
+    right:100px;
+    top:20px;
+    left:20px;
+    margin-top:50px;
+    margin-left:900px;
+    padding-right:10px;
+    background-color: white;
+    width: 100px;
+    opacity:0.9;
+    filter:alpha(opacity=40); /* For IE8 and earlier */
+    moz-border-radius: 15px;
+    border-radius: 15px;
+    /*position:absolute;*/
+    /*visibility:hidden;*/
+}
+
+#day_text_div_id
+{
+    float:left;
+    margin-left:10px;
+}
+#day_div_id
+{
+    float:right;
+}
+#hour_text_div_id
+{
+    float:left;
+    margin-left:10px;
+}
+#hour_div_id
+{
+    float:right;
+}
+
+
+
+
+
+#rule_div_id
+{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-width: 20px;
+/*    border-right:thick #ff0000;
+    border-left:thick #ff0000;*/
+    /*border-top:1px solid;*/
+    /*border: 1px solid;*/
+}
+
+#rule_heading_div_id
+{
+    
+    font-size: 16px;
+    
+}
+
+#rule_text_div_id
+{
+    
+    margin-left: 20px;
+    margin-top:5px;
+    font-size: 10px;
+    color: red;
+}
+
+#rule_instance_heading_div_id
+{
+    margin-top: 5px;
+    font-size: 16px;
+    
+    
+}
+
+#rule_instance_text_div_id
+{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-size: 10px;
+    color: blue;
+    
+}
+
+#rule_weight_heading_div_id
+{
+    margin-top: 5px;
+    font-size: 16px;
+    
+    
+}
+
+/*#rule_weight_text_div_id
+{
+    margin-top: 5px;
+    margin-left: 20px;
+    font-size: 10px;
+    color: blue;
+    
+}*/
+
+
+
+/*Overlay buttons*/
+
+/*fm_canvas*/
+#canvas_overlay 
+{   
+    
+    width:800px;
+    height:725px;
+    position:absolute;
+    background-color:white;
+    opacity:0.9;
+    filter:alpha(opacity=40); /* For IE8 and earlier */
+    moz-border-radius: 15px;
+    border-radius: 15px;
+    visibility:hidden;
+    border:1px solid;  
+    
+}
+
+#overlay_close {
+
+}
+
+#button_close_overlay
+{
+    position: absolute;
+    top: 690px;
+    right: 20px;
+    
+    
+}
+#overlay_chart_div_id {
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
+    /*border: 1px solid;*/
+    moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: FlipV;
+    -ms-filter: "FlipV";
+    padding-left:220px;
+    margin-top:0px;
+    /*float:left;*/
+}
+#show_fm_overlay{
+    position:absolute;
+    top:70px;
+    right:30px;
+    top:20px;
+    left:20px;
+    padding-top:50px;
+    /*position:absolute;*/
+    /*visibility:hidden;*/
+}
+#canvas_overlay{
+    position:fixed;
+    top:90px;
+    right:30px;
+}
+
+#show_fm_overlay{
+    
+    float: left;
+    
+}
+
+/*Bottom Row*/ 
+
+#am_floating{
+        width: 100%;
+	height: 100%;
+        float: left;
+        border-top: 3px solid;
+        clear: both;
+}
+#left_am_floating{
+        width: 250px;
+	height: 100%;
+        float: left;
+        /*border: 1px solid*/
+}
+#user-info_am_floating{
+
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-style:solid;
+    border-right: #ff0000;
+    border-left: #ff0000;
+    border-top: #ff0000;
+    border-width:1px
+    
+}
+#dropdown-date_am_floating{
+
+    padding-left: 10px;
+    
+}
+
+#middle_am_floating{
+        width: 400px;
+	height: 100%;
+        float: left;
+        /*border: 1px solid*/
+}
+
+#activity_tabs_am_floating{
+
+	float: left;
+        width: 500px;
+	padding-left: 0px;
+        padding-bottom: 0px;
+	border-width: 0px;
+        padding-top: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+	background-color:white
+}
+
+
+#tables_am_floating{
+    	width: 760px;
+	height: 100%;
+	float: left;
+	padding-left: 0px;
+	border-width: 0px;
+        padding-top: 0px;
+	border-style: solid;
+        /*border: 1px solid;*/
+	background-color:white
+    
+}
+#right_am_floating{
+    
+    
+}
+#buttons_am_floating{
+    height: 100%;
+    width: 140px;
+    padding-top: 250px;
+    float:right;
+    /*border-style: solid;*/
+    /*border: 1px solid;*/
+    background-color:white
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#four-column-container
+{
+    width: 100%;
+    height: 100%;; 
+    float:left;
+    margin-bottom: 20px;
+    /*border: 1px solid;*/
+}
+
+#four-column-container-1
+{
+    width: 20%;
+    height: 100%;
+    float:left;
+    /*border: 1px solid;*/
+    
+}
+#four-column-container-2
+{
+    width: 32%;
+    height: 100%;
+    float:left;
+    padding-left: 30px;
+    /*border: 1px solid;*/
+    
+}
+
+#four-column-container-3
+{
+    width: 32%;
+    height: 100%;
+    float:left;
+    padding-left: 30px;
+    /*border: 1px solid;*/
+    
+}
+
+#four-column-container-4
+{
+    width: 16%;
+    height: 100%;
+    float:left;
+
+    /*border: 1px solid;*/
+    
+}
+
+#three-column-container
+{
+    width: 100%;
+    height: 100%; 
+    float:left;
+    /*border: 1px solid;*/
+}
+
+#three-column-container-1
+{
+    width: 8%;
+    height: 100%;
+    float:left;
+/*    padding: 30px;*/
+    /*border: 1px solid;*/
+    
+}
+#three-column-container-2
+{
+    width: 72%;
+    height: 100%;
+    float:left;
+    /*padding-left: 30px;*/
+    /*border: 1px solid;*/
+    
+}
+#three-column-container-3
+{
+    width: 20%;
+    height: 100%;
+    float:left;
+    /*padding-left: 30px;*/
+    /*border: 1px solid;*/
+    
+}
+#query_sensor_values_button
+{
+    
+    padding:20px;
+    float: right;
+    
+}
+#chartViz2{
+    
+    min-width: 800px; 
+    height: 400px;
+    padding-right: 10px;
+    /*border: 1px solid;*/
+}
+
+#building_actuation_actual_viewer_div
+{
+    /*width: 50%;*/
+    height: 100%;
+    float: left;
+    padding: 20px;
+    
+}
+
+#building_actuation_suggested_viewer_div
+{
+    /*width: 100%;*/
+    height: 100%;
+    float: left;
+    padding: 20px;
+}
+
+#energy_actuation_actual_value_div_id
+{   
+    width: 300px;   
+}
+
+#energy_actuation_suggested_value_div_id
+{   
+    width: 300px;   
+}
+
+#energy_consumption_display_div_id
+{
+    width: 120px;
+}
+#energy_consumption_display_div
+{
+    width: 120px;
+}
+
+
+#traffic_light_container{
+    padding-top:10px;
+    
+}
+/*! Light */
+#light {
+    background-color: #000;
+    box-shadow: 0 0 5px rgba(0,0,0, .8);
+    overflow: hidden;
+    padding: 0 0 4px;
+    width: 40px;
+}
+
+#light span {
+    border-radius: 50px;
+    display: block;
+    height: 30px;
+    margin: 4px auto 0;
+    opacity: .5;
+    width: 30px;
+}
+
+/*! Light colours */
+#traffic_light_red    { background-color: red; }
+#traffic_light_orange { background-color: orange; }
+#traffic_light_green  { background-color: green; }
+
+/*! Active states */
+#light span.active    { opacity: 1; }
+#light #red.active    { box-shadow: 0 0 10px red; }
+#light #orange.active { box-shadow: 0 0 10px orange; }
+#light #green.active  { box-shadow: 0 0 10px green; }
+
+
+#log_data_container{
+    
+    
+    
+}
+
+#log_data_container_left{
+    
+    float:left;
+    
+}
+
+#log_data_container_right{
+    
+    float:right;
+    
+}
+
+#logdata_output_textarea
+{
+    
+    height: 200px;
+    width: 600px;
+    max-height: 200px;  
+    max-width: 600px; 
+    float: left;
+    overflow-y: auto;
+    border: 1px solid;
+    
+}
+
+#log_data_input_textarea
+{
+    
+    height: 200px;
+    width: 400px;
+    max-height: 200px; 
+    max-width: 400px;
+    float: left;
+    
+    border: 1px solid;
+       
+}
+#log_data_button
+{
+    float:left;
+    margin-left: 10px;
+    /*border: 1px solid;*/
+    margin-top: 160px;
+    
+}
+
+
+/*.ui-autocomplete 
+{ 
+    height: 200px; overflow-y: scroll; overflow-x: hidden;
+}*/
+
+#load_button_text_id
+{
+    
+    width:100px;
+    margin-bottom: 10px;
+    /*background:rgb(0,0,180);*/
+    
+}
+
+#save_button_text_id
+{
+    
+    width:100px;
+    margin-bottom: 10px;
+    /*background:rgb(180,0,0);*/
+    
+}
+
+#load_gCal_button_text_id
+{
+    
+    width:100px;
+    
+}

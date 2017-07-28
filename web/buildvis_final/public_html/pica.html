@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BuildVis Tool</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+
+    
+    <!--  START OF APP SPECIFIC CODE -->
+    
+    <!--  GOOGLE CALENDAR SCRIPT -->
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <script src="js/google_calendar/query_calendar.js"></script>
+    
+    <!-- currently required for page display -->
+    <script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.8.21.custom.min.js"></script>
+<!--    <link rel="stylesheet" type="text/css" href="css/datepicker.css"> 
+    <link rel="stylesheet" type="text/css" href="css/normalize.css"> -->
+    <script type="text/javascript" src="js/jquery/jquery.datepick.js"></script>
+    <script src="js/jquery/jquery.js"></script>
+    <script src="js/jquery/jquery.form.js"></script>
+    
+    <script> var current_building = 3; //Determines which building will be loaded (temporary) 
+    </script>
+    
+    <!-- initialise collections  -->
+    <script src="js/collections/miniset.js"></script>
+    
+    <!-- check operating system  -->
+    <script src="js/webgl/return_operating_system.js"></script>
+    
+    <!-- initialise and set global variables -->
+    <script src="js/variables/init_global_variables.js"></script>
+    <script src="js/variables/set_global_variables.js"></script>
+    <script src="js/variables/zone_variables.js"></script>
+    <script src="js/variables/init_menus.js"></script>
+        
+    <!-- Language Variables: 
+    This file updates elements in the HTML page 
+    according to the language setting (e.g. dutch, spanish or english). -->
+    <script src="js/variables/languages/set_language.js"></script>
+
+    <!-- occupancy matrix model 
+    (only used for displaying which zones are occupied)  -->
+    <script src="js/occupancy_model/occupancy_matrix.js"></script>
+
+    <!-- load data objects (for storing zones, paths, etc.)-->
+    <script src="js/objects/zone.js"></script>
+    <script src="js/objects/path.js"></script>
+    <script src="js/objects/polygon.js"></script>
+
+    <!-- draws different objects (currently I use this for drawing the zones,
+    which I needed to add to Antons webgl stuff. 
+    I needed to put here, as the next functions 
+    will populate the zones with values.-->
+    <script src="js/webgl/draw/drawZones.js"></script>
+    
+    
+    <!-- for querying the ontology -->
+    <script src="js/sparql/query.js"></script>
+    <script src="js/sparql/zone_query.js"></script>
+    <script src="js/sparql/path_query.js"></script>
+    <script src="js/sparql/sensor_query.js"></script>
+    <script src="js/sparql/occupancy_query.js"></script>
+    <script src="js/sparql/user_activities_sparql.js"></script>
+    <script src="js/sparql/populate_sql_database.js"></script>
+    <script src="js/sparql/logging_data_query.js"></script>
+    
+    <!-- for querying the sql database -->
+    <script src="js/my_sql_ajax/query_building_database.js"></script>
+    <script src="js/my_sql_ajax/periodic_sensor_query.js"></script>
+    
+    <script src="js/page-ui/html-controls.js"></script>
+    <script src="js/page-ui/sql_chart.js"></script>
+    <script src="js/page-ui/building_control_html_controls.js" type="text/javascript"></script>
+
+    <!-- Widgets -->
+    <script src="js/widgets/traffic_light.js"></script>
+    <script src="js/widgets/highcharts.js"></script>
+    <script src="js/widgets/ajax_create_highchart.js"></script>
+    <script src="js/widgets/chart_1.js"></script>
+    <script src="js/widgets/sliders.js"></script>
+    <script src="js/widgets/date_time_pickers.js"></script>
+
+
+    <!--Some simple maths functions -->
+    <script src="js/webgl/simple-math.js"></script>
+
+
+    <!--For creating and populating the tables-->
+    <script src="js/handsontables/activity-tables.js"></script>  
+    <script src="js/handsontables/checkPaths.js"></script>  
+    <script src="js/handsontables/updatePaths.js"></script> 
+
+
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/handsontables/jquery.handsontable.full.js"></script>
+    <script src="js/jquery/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="js/jquery/jquery.timepicker.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css" /> 
+
+    <link rel="stylesheet" media="screen" href="css/jquery.handsontable.full.css">
+
+    <link rel="stylesheet" type="text/css" href="css/kris-css.css">
+    <link rel="stylesheet" href="css/jquery/jquery-ui-kris.css" />
+
+
+</head>
+<body>
+    
+<div class="container">
+
+    <!-- Static navbar -->
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">BuildVis</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Commented out extra links from the navbar -->
+                    <!--<li class="active"><a href="#">Link</a></li>-->
+                    <!--<li><a href="#">Link</a></li>-->
+                    <!--<li><a href="#">Link</a></li>-->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Choose Building<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./forum.html">Forum</a></li>
+                            <li><a href="./hhs.html">HHS</a></li>
+                            <li><a href="./media-tic.html">Media-TIC</a></li>
+                            <li><a href="./bluenet.html">BlueNet</a></li>
+                            <li><a href="./pica.html">PICA</a></li>
+<!--                                <li class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Under Construction</a></li>
+                            <li><a href="#">Under Construction</a></li>-->
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Commented out the the navbar options examples... these may be useful -->
+                <!--<ul class="nav navbar-nav navbar-right">-->
+                    <!--<li class="active"><a href="./">Default</a></li>-->
+                    <!--<li><a href="../navbar-static-top/">Static top</a></li>-->
+                    <!--<li><a href="../navbar-fixed-top/">Fixed top</a></li>-->
+                <!--</ul>-->
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </div>
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h1>BuildVis Tool</h1>
+        <p>The BuildVis tool is a multi-purpose tool for providing building users (facility managers and occupants) the capabilities to interact with the building environment. 
+            Facility managers can query sensor data on a zone basis for more informed data on energy consumption. Occupants can provide data on their activities within zones.</p>
+    </div>
+
+    <div class="panel panel-default" id="panel_energy_monitoring_panel">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    Energy Monitoring and Actuation Suggestion
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                
+                <div id="four-column-container">
+                    <div id="four-column-container-1">
+                        <!--<h3>Building Performance</h3>-->
+                        <div id="zone_and_energy_container">
+                            <div class="well span9">
+                                <form id="form-inline">
+                                    <fieldset>
+                                        <legend>Zone Info</legend>
+                                        <label>Selected Zone ID</label>
+                                        <input type="text" placeholder="Click on Zone" class="input-xlarge" id="energy_consumption_display_div_id">
+                                        <label>Current Energy Consumption</label>
+                                        <input type="text" placeholder="Click on Zone" class="input-xlarge" id="energy_consumption_display_div">
+                                    </fieldset>
+                                </form>
+                            </div>
+<!--                                    <div><label for="energy_consumption_display_div_id">Selected Zone ID:</label><input type="text" id="energy_consumption_display_div_id" value='Click on Zone' /></div>
+                            <div><label for="energy_consumption_display_div">Current Energy Consumption:</label><input type="text" id="energy_consumption_display_div" value="kWh" /></div>-->
+                        </div>
+
+                    </div> 
+
+                    <div id="four-column-container-2">  
+
+                        <!--<div><label for="energy_actuation_actual_value_div_id">Current State:</label><input type="text" id="energy_actuation_actual_value_div_id" value='Click on Zone' /></div>-->
+                        <div class="panel-heading">Current Zone State</div>
+                        <div class="well well-lg" id="energy_actuation_actual_value_div_id">Click on zone...</div>
+
+
+                    </div>
+
+                    <div id="four-column-container-3"> 
+
+                        <div class="panel-heading">Suggested Zone State</div>
+                        <div class="well well-lg" id="energy_actuation_suggested_value_div_id">Click on zone...</div>
+
+                        <div id="weight-slider-range" style="width: 260px; margin: 15px;"></div>
+                        <div id='rule_weight_text_div_id' for="weight-slider-range" style="margin: 40px;">%5 Energy Saving Required</div>
+<!--                                <div><label for="energy_actuation_suggested_value_div_id">Suggested State:</label><input type="text" id="energy_actuation_suggested_value_div_id" value='Click on Zone' /></div>  -->
+
+                    </div>
+                    <div id="four-column-container-4">
+                        <div class="panel-heading" id="sensors_for_query_label_id">Available Sensors</div>
+                        <div class="well span9">
+
+                            <div id="monitoring_checklist_div">
+                                <!--<input id = "m_c_1" type="checkbox" class="m_c_style" value="occupancy" onclick=""><label for="m_c_1">Occupancy</label><br />-->
+                            </div>
+                            <script type="text/javascript"> 
+                                init_sensors();
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="three-column-container">
+
+                    <div id="three-column-container-1">  
+                        <div class="well span9">
+                            <div id="light">
+                                <span id="traffic_light_red"></span>
+                                <span id="traffic_light_orange"></span>
+                                <span id="traffic_light_green"></span>
+                            </div>
+                            <div id="avg_sensor_value_display_div"></div>
+                        </div>
+                    </div> 
+                    <div id="three-column-container-2">
+                        <div id="tabs_energy_monitoring">
+
+                            <div id="historical_monitoring" class="section"> 
+                                <script>
+//                                    get_details(1, 2, 3, 4);
+                                </script>
+                                <div id="chartViz2">Select Zone and Query for Sensor Data to Display Chart</div>
+                            </div>
+
+                        </div>  
+                    </div>
+                    <div id="three-column-container-3">
+                        <div id="monitoring_time_select">
+                            <div class="well span9">
+                                <form id="form-inline">
+                                    <fieldset>
+                                        <legend>Time and Date Select</legend>
+                                        <label>Date</label>
+                                        <input type="text" value="01/30/2013" class="input-xlarge" id="monitoring_date_picker">
+                                        <label>Start Time</label>
+                                        <input type="text" value="13:00" class="input-xlarge" id="monitoring_time_picker_start">
+                                        <label>End Time</label>
+                                        <input type="text" value="15:00" class="input-xlarge" id="monitoring_time_picker_end">                                               
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                        <button onclick="query_all_values();return false;" id='query_sensor_values_button'>Query Values</button>
+                    </div>
+
+                </div> 
+            </div>
+        </div>
+    </div>  
+                <!--end collapse one-->
+            <!--/end div class panel default--> 
+    <div class="panel panel-default" id="logging_interface_panel">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOneTwo">
+                    Logging Interface
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOneTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+
+                <div id="log_data_container">
+
+                    <div id="log_data_container_left">
+                        <div class="input-group">
+                            <header>Log Data Entry Window</header>
+                            <div contenteditable="true" id="log_data_input_textarea"> 
+<!--                                    <select>
+                                    <option value="volvo">Volvo</option>
+                                    <option value="saab">Saab</option>
+                                    <option value="mercedes">Mercedes</option>
+                                    <option value="audi">Audi</option>
+                                </select>                                -->
+                            </div>
+                            <button onclick="query_update_log_data('Test');return false;" class="btn btn-default" type="button" id="log_data_button">Log Data</button>
+
+                        </div>
+                    </div>
+
+                    <div id="log_data_container_right"> 
+
+                        <header>Historical Logs</header>
+                        <div id="logdata_output_textarea"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>  
+    </div> 
+            
+       
+    <div class="panel panel-default" id="webg_gl_view_panel">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    3D Map View (Hold the 'x' key and mouse click on a zone to select).
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <canvas id="canvas_id" width=1024 height=768 style="font-family:monospace; background-color: #a9a9a9">
+                    your browser does not support HTML5
+                </canvas>
+            </div>
+        </div>
+    </div>
+       
+    <div class="panel panel-default"  id="activity_modeller_panel">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    Activity Modeller
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+
+
+                <div id="bottom-row" class="config-window">
+                    <div id="bottom-row-left">
+
+                        <div id="user-info">
+                            <h3 id="user_info_header_id">Gebruikers Identificatie</h3>
+                            <div id="id_roomNo" class="dataTable"></div>                      
+                            <!--<button onclick="update_zone_id_handsontables()" name="update_activity_zone_id">Update Activity Zone</button>-->
+                        </div>
+                        <div id="dropdown-date">
+
+                            <h3 id="date_select_header_id">Selecteer een Datum</h3>
+                            <input type="text" id="datepicker" />
+                            <script type="text/javascript">
+        //                            drop_down_dates();
+                                $(function() {
+        //                              $( "#datepicker" ).datepicker();
+                                  var myDate = new Date();  
+                                  var d1 = myDate.getMonth()+1;
+                                  if(d1<10)
+                                  {
+                                      d1 = "0" + d1;
+                                  }
+                                  var day = myDate.getDay();
+                                  var d2 = myDate.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+                                  if(d2<10)
+                                  {
+                                      d2 = "0" + d2;
+                                  }
+                                  var todays_date = (d1 + '/' + d2 + '/' + myDate.getFullYear());
+                                    $("#datepicker").datepicker();
+                                    $("#datepicker").val(todays_date);
+                                });
+                            </script>
+
+                        </div>
+                    </div>        
+
+                <div id="bottom-row-middle">
+                    <div id="activity_tabs">
+                        <div id="tabs_text_id">Uw Wekelijkse Activiteiten</div>
+                        <ul>
+                          <li><a href="#activity_tabs-1" onclick="toggleVisibility('activity-day-start-end-table');" id="activity-day-start-end-table-h">Dag begin- en eindtijden</a></li>
+                          <li><a href="#activity_tabs-2" onclick="toggleVisibility('activity-lunch-table');" id="activity-lunch-table-h">Lunch</a></li>
+                          <li><a href="#activity_tabs-4" onclick="toggleVisibility('activity-meetings-table'); queryGoogleCalendar();" id="activity-meetings-table-h">Vergaderingen</a></li>
+                          <!--<li><a href="#tabs-3" onclick="toggleVisibility('activity-breaks-table');" id="activity-breaks-table-h">Andere activiteiten</a></li>-->
+                        </ul>
+                        <div id="tables">
+                            <div id="activity_tabs-1">
+                                <div id="activity-day-start-end-table" class="section"> 
+                                    <div id="tabs_1_text_id">Dag begin- en eindtijden, route naar en van uw werkplek.</div>
+                                    <div id="dayStart_dayEnd" class="dataTable"></div>
+                                </div>                    
+                            </div>  
+                            <!--End tabs-1--> 
+                            <div id="activity_tabs-2">
+                                <div id="activity-lunch-table" class="section"> 
+                                    <div id="tabs_2_text_id">Lunch begin- en eindtijden, genomen route tussen werkplek en locatie van uw lunch.</div>
+                                    <div id="lunchBreak" class="dataTable"></div>
+                                </div>
+                            </div>  
+                            <!--End tabs-2--> 
+                            <div id="activity_tabs-4">
+                                <div id="activity-meetings-table" class="section"> 
+                                <div id="tabs_4_text_id">Vergaderingen</br></div>
+                                <script type="text/javascript">
+                                    drop_down_meetings_table();
+                                </script>
+                                <div id="dailyMeetingsMon" class="dataTable"></div>
+                                <!--<b>Tuesday</b>-->
+                                <div id="dailyMeetingsTue" class="dataTable"></div>
+                                <!--<b>Wednesday</b>-->
+                                <div id="dailyMeetingsWed" class="dataTable"></div>
+                                <!--<b>Thursday</b>-->
+                                <div id="dailyMeetingsThur" class="dataTable"></div>
+                                <!--<b>Friday</b>-->
+                                <div id="dailyMeetingsFri" class="dataTable"></div>
+                                <!--<b>Saturday</b>-->
+                                <div id="dailyMeetingsSat" class="dataTable"></div>
+                                <!--<b>Sunday</b>-->
+                                <div id="dailyMeetingsSun" class="dataTable"></div>
+                                </div>
+                            </div> 
+                            <!-- End tabs-4 -->
+                        </div> <!-- End Tables -->
+                    </div> <!-- End Tabs -->
+                </div> <!-- End bottom row middle -->
+                <div id="bottom-row-right">
+                    <div id="buttons">
+                        <div id="activity_button_load">
+                            <button type="button" class="btn btn-default" name="load" id="load_button_text_id"><span class="glyphicon glyphicon-open"></span>Laden</button>
+                        </div>
+                        <div id="activity_button_save">
+                            <button type="button" class="btn btn-default" name="save" id="save_button_text_id"><span class="glyphicon glyphicon-save"></span>Opslaan</button>
+                        </div>                     
+                        <div id="activity_button_load_gCal">
+                            <button onclick="" name="load_gCal" id="load_gCal_button_text_id">Google Calendar</button>
+                        </div>
+
+                    </div>
+                    </div>
+                </div>              
+            </div> <!-- /end div class panel body -->
+        </div> <!-- /end div collapse 3 -->
+    </div><!-- /end div class panel default -->
+
+        <!-- /end div class panel default -->
+    <!--</div>--> 
+    <!-- /end panel group container -->
+</div>  <!-- /end container -->
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ************************* END ***************************** -->
+
+    <script src="js/webgl/draw/drawZones.js"></script>
+    <script src="js/webgl/display_room_tags.js"></script>
+    <script src="js/webgl/blinds.js"></script>
+    <script src="js/webgl/input_handler.js"></script>
+    <script src="js/webgl/ray-plane-pick.js"></script>
+    <script src="js/webgl/ground_plane.js"></script>
+    <script src="js/webgl/cam_gui.js"></script>
+    <script src="js/webgl/gl_utils.js"></script>
+    <script src="js/webgl/camera.js"></script>
+    <script src="js/webgl/load_xml_building.js"></script>
+    <script src="js/webgl/antons_maths.js"></script>
+    <script src="js/webgl/webgl-debug.js"></script>
+    <script src="js/webgl/webgl-utils.js"></script>
+    <script src="js/webgl/real_data.js"></script>
+    <script src="js/webgl/model_data.js"></script>
+    <script src="js/webgl/font.js"></script>
+    <script src="js/webgl/utils.js"></script>
+    <script src="js/webgl/chart.js"></script>
+    <script src="js/webgl/main.js"></script>
+    <script src="js/webgl/init.js"></script>
+
+    <script>
+
+        sparql_load_zones_pica();
+        update_log_div_content();
+        set_html_visibility();
+
+    </script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
